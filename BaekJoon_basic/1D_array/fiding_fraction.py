@@ -3,29 +3,30 @@ def solver(X):
     dir = False
 
     while True:
-        X -= n
-        dir = not dir
+        X -= n # n개의 블록을 간다.
+        dir = not dir  # 방향을 바꾼다.
 
-        if X <= n:
-            break
         n += 1
+        if X <= n: #다음 n개의 블록을 갈수 있나?
+            break #못가면 break
 
 
 
-    if X == 0:
+
+    if X == 0: # 더 갈 필요가 없다.
         if dir == True:
-            return 1, n
+            return 1, n-1
         else:
-            return n, 1
+            return n-1, 1
     else:
         if dir == True:
             nemer = 1
-            denom = n+1
+            denom = n
             for i in range(X-1):
                 nemer += 1
                 denom -= 1
         else:
-            nemer = n+1
+            nemer = n
             denom = 1
             for i in range(X-1):
                 nemer -= 1
