@@ -1,6 +1,6 @@
-k='12'
+from collections import deque
 
-if k:
-    print("True")
-else:
-    print(k)
+'''matrix =[[0] * 10 for _ in range(9)]
+print(matrix)'''
+
+print(deque[[1], [2]])
