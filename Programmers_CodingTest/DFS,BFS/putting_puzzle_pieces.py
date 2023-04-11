@@ -23,7 +23,7 @@ def catch_piece(table,row,col):
     :param table: 퍼즐의 조각 상태
     :param row: 테이블에서 발견된 조각 놓인 칸의 행 인덱스
     :param col: 테이블에서 발견된 조각 놓인 칸의 열 인덱스
-    :return
+    :return : 현재 주어진 인덱스에서 발견한 퍼즐 행렬
     '''
     R,C = len(table),len(table)
     piece = [[0]*C for _ in range(R)] # 테이블과 같은 크기 2차원 배열
@@ -55,8 +55,8 @@ def catch_piece(table,row,col):
         if sum(i) != 0:
             c_piece.append(i) #그대로
 
-    c_piece = spin(c_piece)
-    print(c_piece, end='\n\n')
+    for _ in range(3):
+        c_piece = spin(c_piece)
     return c_piece
 
 def compare(game_board,piece,row,col):
@@ -69,7 +69,7 @@ def compare(game_board,piece,row,col):
             elif piece[r][c] == 0 and game_board[row+r][col+c] == 1:
                 continue
             else:
-                return 0
+                return 0 #사이즈도 맞고, 얼 추 맞다가 추후에 안맏다 ex) piece - 1
     return cnt
 
 
@@ -83,6 +83,7 @@ def solution(game_board,table):
                 piece.append(catch_piece(table,row,col)) #그 위치에 조각을 획득해보자
                 # 조각들 모음
 
+    print(piece)
     for row in range(R):
         for col in range(C):
             if game_board[row][col] == 0:
@@ -101,24 +102,20 @@ def solution(game_board,table):
                                 min_col,max_col = min(min_col,c+dc),max(max_col,c+dc)
                                 game_board[r+dr][c+dc] = 2
 
-                result = 0
+                result = 0 #현재 조각으로 채울 수 있는 칸수
                 for p in range(len(piece)):
-                    for _ in range(4):
-                        if piece[p][0][0] == -1:
+                    for _ in range(3): # 4번까지 돌리면 된다.
+                        if piece[p][0][0] == -1:  # 조각 중복 금지
                             break
                         if len(piece[p]) == max_row-min_row+1 and len(piece[p][0]) == max_col-min_col+1:
                             result = compare(game_board,piece[p],min_row,min_col)
-
-                            if result > 0:
-                                answer += result
+                            if result > 0: # 딱 맞아 떨어 졌다.
+                                answer += result #최종 대답에 result를 합해준다.
                                 piece[p][0][0] = -1
                                 break
-                        piece[p] = spin(piece[p])
-                    if result > 0:
+                        piece[p] = spin(piece[p]) # 안맞아 떨어진 경우
+                    if result > 0: #이건 왜 필요한가? => 현재 game_board 인덱스에 딱맞는 조각 찾았으니 다른 조각 비교할 필요 없다.
                         break
 
+    print(game_board)
     return answer
-
-if __name__ == "__main__":
-    #print(solution([[0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0], [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0], [1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1], [0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0], [0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1], [0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0], [0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0], [1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0], [0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0], [0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1], [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0]],[[1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1], [1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1], [1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0], [0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0], [1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0], [1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1], [1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1], [0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1], [1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1], [1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1], [1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1]])) # correct : 54
-    print(solution([[1,1,0,0,1,0],[0,0,1,0,1,0],[0,1,1,0,0,1],[1,1,0,1,1,1],[1,0,0,0,1,0],[0,1,1,1,0,0]],[[1,0,0,1,1,0],[1,0,1,0,1,0],[0,1,1,0,1,1],[0,0,1,0,0,0],[1,1,0,1,1,0],[0,1,0,0,0,0]])) # correct : 14
