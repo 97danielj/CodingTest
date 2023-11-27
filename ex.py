@@ -51,3 +51,38 @@ hasReadPermission = (userPermission & PERMISSION_READ) != 0
 print(hasReadPermission)
 hasDeletePermission = groupPermission & PERMISSION_DELETE != 0
 print(hasDeletePermission)
+
+
+# 2. 집합 관리
+# 집합을 정수로 표현
+
+set = (1 << 3) | (1 << 5) | (1 << 7) #1010 1000
+print("{0:#b}".format(set))
+
+hasElement5 = (set & (1 << 5)) != 0;
+print(hasElement5)
+hasElement6 = (set & (1 << 6)) != 0;
+print(hasElement6)
+
+
+# 3. 상태 관리 / 주어진 수가 2의 거듭제곱인지 여부를 판단
+FLAG_POWER_OF_TWO = 1 << 0; #0001
+FLAG_NEGATIVE = 1 << 1; #0010
+
+number = 8; # 2의 거듭제곱
+flags = 0;
+
+if number & (number-1) == 0 :
+    flags |= FLAG_POWER_OF_TWO
+
+
+if (number < 0):
+    flags |= FLAG_NEGATIVE
+    print(flags)
+
+
+if ((flags & FLAG_POWER_OF_TWO) != 0):
+    print(number, " is power of two") #1
+
+if ((flags & FLAG_NEGATIVE != 0)):
+    print(number, "is negaive") # 2
