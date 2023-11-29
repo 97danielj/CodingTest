@@ -28,6 +28,7 @@ print(hasDeletePermission)
 
 # 2. 집합 관리: 집합을 비트로 표현
 set = (1 << 3) | (1 << 5) | (1 << 7) #0010 1010 1000
+# 연산결과:
 hasElement5 = (set & (1 << 5)) != 0; #True
 hasElement6 = (set & (1 << 6)) != 0; #False
 
