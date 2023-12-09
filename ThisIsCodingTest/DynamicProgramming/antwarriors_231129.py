@@ -11,22 +11,21 @@
 
 # 1. DP 조건 확인
 # DP O
-
 # 2. 변수 파악
 n = int(input())
 array = list(map(int, input().split()))
-# 3. 관계식 정의(점화식)
-# 4. 메모하기
+# 3. 관계식 정의(점화식) / dp[n], array[n]
+# 4. 메모하기(Memoization)
 # 앞서 계산된 결과를 저장하기 위한 dp table
 dp = [0] * 100
 
-# 다이나믹 프로그래밍 진행(Bottom-up / table-filling)
 # 5. 기저 상태 파악
 dp[0] = array[0]
 # 기저 상태 2
 dp[1] = max(array[0], array[1])
 
 # 6. 구현하기
+# bottom up- 반복문 사용
 for i in range(2, n):
     dp[i] = max(dp[i-1], dp[i-2] + array[i])
 
